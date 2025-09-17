@@ -1,144 +1,64 @@
 import { createBrowserRouter } from "react-router-dom";
 
+// default roots
 import MainPage from "../pages/Main/MainPage";
-
 import AdminPage from "../pages/Admin/AdminPage";
-
-import BookDetailPage from "../pages/Book/BookDetailPage";
-import BookFilterPage from "../pages/Book/BookFilterPage";
-import BookListPage from "../pages/Book/BookListPage";
-import BookSearchPage from "../pages/Book/BookSearchPage";
-
-import CommunityFAQPage from "../pages/Community/CommunityFAQPage";
-import CommunityGalleryPage from "../pages/Community/CommunityGalleryPage";
-import CommunityNoticePage from "../pages/Community/CommunityNoticePage";
-import CommunityQnAPage from "../pages/Community/CommunityQnAPage";
-
-import LibraryInfoGuidePage from "../pages/LibraryInfo/LibraryInfoGuidePage";
-import LibraryInfoVisitUsPage from "../pages/LibraryInfo/LibraryInfoVisitUsPage";
-
-import MyPage from "../pages/MyPage/MyPage";
-import MyPageModify from "../pages/MyPage/MyPageModify";
-
 import SeatPage from "../pages/Seat/SeatPage";
-
 import LoginPage from "../pages/User/LoginPage";
 
-const root = createBrowserRouter(
-	[
-        // main
-		{
-            path:"/",
-		    element: (
-                <MainPage />
-            )
-        },
+// Routers
+import bookRouter from "./bookRouter";
+import communityRouter from "./communityRouter";
+import libraryInfoRouter from "./libraryInfoRouter";
+import myPageRouter from "./mypageRouter";
 
-        // admin
-        {
-            path:"/admin/admin",
-		    element: (
-                <AdminPage />
-            )
-        },
+const root = createBrowserRouter([
+  // main
+  {
+    path: "/",
+    element: <MainPage />,
+  },
 
-        // book
-        {
-            path:"/book/detail",
-		    element: (
-                <BookDetailPage />
-            )
-        },
-        {
-            path:"/book/filter",
-		    element: (
-                <BookFilterPage />
-            )
-        },
-        {
-            path:"/book/list",
-		    element: (
-                <BookListPage />
-            )
-        },
-        {
-            path:"/book/search",
-		    element: (
-                <BookSearchPage />
-            )
-        },
+  // admin
+  {
+    path: "/admin",
+    element: <AdminPage />,
+  },
+  // seat
+  {
+    path: "/seat",
+    element: <SeatPage />,
+  },
 
-        // Community
-        {
-            path:"/community/faq",
-		    element: (
-                <CommunityFAQPage />
-            )
-        },
-        {
-            path:"/community/gallery",
-		    element: (
-                <CommunityGalleryPage />
-            )
-        },
-        {
-            path:"/community/notice",
-		    element: (
-                <CommunityNoticePage />
-            )
-        },
-        {
-            path:"/community/qna",
-		    element: (
-                <CommunityQnAPage />
-            )
-        },
+  // user
+  {
+    path: "/user",
+    element: <LoginPage />,
+  },
 
-        // LibraryInfo
-        {
-            path:"/libaryinfo/guide",
-		    element: (
-                <LibraryInfoGuidePage />
-            )
-        },
-        {
-            path:"/libaryinfo/visitus",
-		    element: (
-                <LibraryInfoVisitUsPage />
-            )
-        },
+  // book router
+  {
+    path: "book",
+    children: bookRouter(),
+  },
 
-        // mypage
-        {
-            path:"/mypage/mypage",
-		    element: (
-                <MyPage />
-            )
-        },
-        {
-            path:"/mypage/modify",
-		    element: (
-                <MyPageModify />
-            )
-        },
+  // Community router
+  {
+    path: "community",
+    children: communityRouter(),
+  },
 
-        // seat
-        {
-            path:"/seat/seat",
-		    element: (
-                <SeatPage />
-            )
-        },
+  // LibraryInfo router
+  {
+    path: "libaryinfo",
+    children: libraryInfoRouter(),
+  },
 
-        // user
-        {
-            path:"/user/login",
-		    element: (
-                <LoginPage />
-            )
-        },
-    ]
-
-);
+  // mypage router
+  {
+    path: "mypage",
+    children: myPageRouter(),
+  },
+]);
 
 export default root;

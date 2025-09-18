@@ -1,11 +1,8 @@
-import React from 'react'
+import LibraryInfoLayout from './LibraryInfoLayout';
+import LibraryIngoVisitUs from './LibraryIngoVisitUs';
 
 const LibraryInfoVisitUsComponent = () => {
-  return (
-    <div>
-      LibraryInfoVisitUsComponent
-    </div>
-  )
+  return <LibraryInfoLayout children={<LibraryIngoVisitUs />} />;
 }
 
 export default LibraryInfoVisitUsComponent

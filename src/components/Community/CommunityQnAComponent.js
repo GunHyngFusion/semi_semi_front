@@ -1,11 +1,9 @@
 import React from 'react'
+import CommunityLayout from './CommunityLayout';
+import CommunityQnA from './CommunityQnA';
 
 const CommunityQnAComponent = () => {
-  return (
-    <div>
-      CommunityQnAComponent
-    </div>
-  )
+  return <CommunityLayout children={<CommunityQnA />} />;
 }
 
 export default CommunityQnAComponent

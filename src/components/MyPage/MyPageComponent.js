@@ -1,11 +1,9 @@
-import React from 'react'
+
+import MyPageLayout from './MyPageLayout';
+import MyPage from './MyPage';
 
 const MyPageComponent = () => {
-  return (
-    <div>
-      MyPageComponent
-    </div>
-  )
+  return <MyPageLayout children={<MyPage />} />;
 }
 
 export default MyPageComponent

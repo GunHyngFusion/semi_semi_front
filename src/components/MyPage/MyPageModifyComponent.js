@@ -1,11 +1,9 @@
-import React from 'react'
+
+import MyPageLayout from './MyPageLayout';
+import MyPageModify from './MyPageModify';
 
 const MyPageModifyComponent = () => {
-  return (
-    <div>
-      MyPageModifyComponent
-    </div>
-  )
+  return <MyPageLayout children={<MyPageModify />} />;
 }
 
 export default MyPageModifyComponent

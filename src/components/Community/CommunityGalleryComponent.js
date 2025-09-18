@@ -1,11 +1,9 @@
 import React from 'react'
+import CommunityLayout from './CommunityLayout';
+import CommunityGallery from './CommunityGallery';
 
 const CommunityGalleryComponent = () => {
-  return (
-    <div>
-      CommunityGalleryComponent
-    </div>
-  )
+  return <CommunityLayout children={<CommunityGallery />} />;
 }
 
 export default CommunityGalleryComponent

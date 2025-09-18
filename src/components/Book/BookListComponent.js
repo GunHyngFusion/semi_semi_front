@@ -1,11 +1,8 @@
-import React from 'react'
+import BookLayout from "./BookLayout";
+import BookList from "./BookList";
 
 const BookListComponent = () => {
-  return (
-    <div>
-      BookListComponent
-    </div>
-  )
-}
+  return <BookLayout children={<BookList />} />;
+};
 
-export default BookListComponent
+export default BookListComponent;

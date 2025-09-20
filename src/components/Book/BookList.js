@@ -1,14 +1,40 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 
 const BookList = () => {
-  const books = [
-    { title: "제목 대충지음 1" },
-    { title: "제목 대충지음 2" },
-    { title: "제목 대충지음 3" },
-    { title: "제목 대충지음 4" },
-    { title: "제목 대충지음 5" },
-    { title: "제목 대충지음 6" },
-  ];
+  const [bookList, setBookList] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const categories = ['문학', '과학', '국내소설', '해외소설'];
+  const etc = [...categories, '기타'];
+
+  useEffect(() => {
+    try {
+      const getList = async () => {
+        const { data } = await axios.get('http://localhost:8080/list');
+        console.log(data)
+        const finalData = data.map(book => 
+          categories.includes(book.genre) ? book : { ...book, genre: '기타' }
+        )
+        setBookList(finalData)
+      }; getList();
+    } catch (error) {
+      console.log(error);
+    }
+  }, [])
+
+  const handleCheckedCategory = (category) => {
+    setSelectedCategories((prev) => {
+      if (prev.includes(category)) {
+        return prev.filter(c => c !== category)
+      }
+      else {
+        return [...prev, category]
+      }
+    })
+  }
+  const filteredBooks = selectedCategories.length == 0
+    ? bookList
+    : bookList.filter(book => selectedCategories.includes(book.genre))
 
   return (
     <div className="container-fluid">
@@ -19,23 +45,16 @@ const BookList = () => {
             <h5 className="card-title fw-bold">도서 카테고리</h5>
             <ul className="list-unstyled mt-3">
               <li className="mb-2">전체</li>
-              <li className="mb-2 d-flex justify-content-between align-items-center">
-                <span>문학</span>
-                <input type="checkbox" />
-              </li>
-              <li className="mb-2 d-flex justify-content-between align-items-center">
-                <span>국내소설</span>
-                <input type="checkbox" />
-              </li>
-              <li className="mb-2 d-flex justify-content-between align-items-center">
-                <span>해외소설</span>
-                <input type="checkbox" />
-              </li>
-              <li className="mb-2 d-flex justify-content-between align-items-center">
-                <span>과학</span>
-                <input type="checkbox" />
-              </li>
-              <li className="mb-2">등등..</li>
+              {etc.map(category => (
+                <li className="mb-2 d-flex justify-content-between align-items-center">
+                  <span>{category}</span>
+                  <input type="checkbox"
+                    onChange={() => handleCheckedCategory(category)}
+                    checked={selectedCategories.includes(category)}
+                  />
+                </li>
+              )
+              )}
             </ul>
           </div>
 
@@ -45,7 +64,7 @@ const BookList = () => {
               <strong>제목:</strong>
             </div>
             <div>
-              <strong>카테고리:</strong> 문학
+              <strong>카테고리: {selectedCategories.join(', ')}</strong>
             </div>
             <h6 className="fw-bold mt-4">최근 검색어</h6>
             <ol className="mb-0">
@@ -61,7 +80,7 @@ const BookList = () => {
         <div className="col-lg-9 col-md-8 p-4">
           <div className="row">
             {/* Placeholder for book items */}
-            {[...Array(9)].map((_, index) => (
+            {filteredBooks.map((book, index) => (
               <div key={index} className="col-lg-4 col-md-6 mb-4">
                 <div className="text-center">
                   <div
@@ -73,7 +92,7 @@ const BookList = () => {
                   >
                     {/* Image Placeholder */}
                   </div>
-                  <p className="mb-0 fw-bold">제목 대충지음 {index + 1}</p>
+                  <p className="mb-0 fw-bold">{book.title}</p>
                 </div>
               </div>
             ))}

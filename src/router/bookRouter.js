@@ -6,10 +6,7 @@ import BookRecommendPage from "../pages/Book/BookRecommendPage";
 const bookRouter = () => {
   return [
     // book
-    {
-      path: "detail",
-      element: <BookDetailPage />,
-    },
+
     {
       path: "filter",
       element: <BookFilterPage />,
@@ -21,6 +18,10 @@ const bookRouter = () => {
     {
       path: "recommend",
       element: <BookRecommendPage />,
+    },
+        {
+      path: ":isbn",
+      element: <BookDetailPage />,
     },
   ];
 };

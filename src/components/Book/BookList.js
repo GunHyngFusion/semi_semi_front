@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const BookList = () => {
   const [bookList, setBookList] = useState([]);
@@ -92,7 +93,9 @@ const BookList = () => {
                   >
                     {/* Image Placeholder */}
                   </div>
+                 <Link to={`/book/${book.isbn}`} className="text-decoration-none text-dark">
                   <p className="mb-0 fw-bold">{book.title}</p>
+                  </Link>
                 </div>
               </div>
             ))}

@@ -5,7 +5,7 @@ const Header = () => {
   return (
     <header className="header">
       <div className="logo">
-        <Link to="/">📚 도서관</Link>
+        <Link to="/">작은 그린 도서관</Link>
       </div>
       <nav className="nav">
         <ul>

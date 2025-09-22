@@ -1,31 +1,67 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+
 const MyPage = () => {
-  const member = {
-    name: "keonvin",
-    email: "keonvin@example.com",
-    role: "그룹관리자",
-    joinDate: "2023-04-01",
-    lastLogin: "2025-09-18 22:45:12",
-    status: "활동중",
-  };
+  const [memberInfo, setMemberInfo] = useState({});
+  const { id } = useParams();
+  useEffect(() => {
+    const getMemberInfo = async () => {
+      try {
+        const { data } = await axios.get(`http://localhost:8080/member/info/${id}`)
+        setMemberInfo(data);
+      } catch (error) {
+        alert("오류 발생");
+        console.log(error);
+      }
+    };getMemberInfo()
+  }, [id])
 
-  return (
-    <div className="col-lg-10 col-md-9 main-content p-4">
-      <h1 className="main-title">👤 회원 정보</h1>
+  return (
+    <div className="p-4 md:p-8 w-full max-w-4xl mx-auto">
+      <h1 className="text-3xl font-bold text-gray-800 mb-6 flex items-center">
+        👤 <span className="ml-2">회원 정보</span>
+      </h1>
 
-      <div className="bg-white border rounded p-4 mb-4">
-        <h5 className="fw-bold mb-3">📌 기본 정보</h5>
-        <ul className="list-unstyled">
-          <li><strong>이름:</strong> {member.name}</li>
-          <li><strong>이메일:</strong> {member.email}</li>
-          <li><strong>회원구분:</strong> {member.role}</li>
-          <li><strong>가입일:</strong> {member.joinDate}</li>
-          <li><strong>최근 로그인:</strong> {member.lastLogin}</li>
-          <li><strong>상태:</strong> {member.status}</li>
-          <li><button>수정</button></li>
-        </ul>
-      </div>
-    </div>
-  );
+      <div className="bg-white shadow-lg rounded-xl p-6 md:p-8">
+        <h5 className="text-xl font-semibold text-gray-700 mb-4 pb-2 border-b border-gray-200 flex items-center">
+          <span className="text-blue-500 mr-2">📌</span> 기본 정보
+        </h5>
+
+        <ul className="list-none space-y-4">
+          {/* 각 정보 항목을 Flexbox로 정렬 */}
+          <li className="flex items-center">
+            <div className="font-medium text-gray-600 w-28 md:w-36 flex-shrink-0">이름:</div>
+            <div className="text-gray-900 truncate">{memberInfo.name}</div>
+          </li>
+          <li className="flex items-center">
+            <div className="font-medium text-gray-600 w-28 md:w-36 flex-shrink-0">생년월일:</div>
+            <div className="text-gray-900 truncate">{memberInfo.birth_date}</div>
+          </li>
+          <li className="flex items-center">
+            <div className="font-medium text-gray-600 w-28 md:w-36 flex-shrink-0">주소:</div>
+            <div className="text-gray-900 truncate">{memberInfo.address}</div>
+          </li>
+          <li className="flex items-center">
+            <div className="font-medium text-gray-600 w-28 md:w-36 flex-shrink-0">전화번호:</div>
+            <div className="text-gray-900 truncate">{memberInfo.phone_number}</div>
+          </li>
+          <li className="flex items-center">
+            <div className="font-medium text-gray-600 w-28 md:w-36 flex-shrink-0">이메일:</div>
+            <div className="text-gray-900 truncate">{memberInfo.email}</div>
+          </li>
+          <li className="flex items-center">
+            <div className="font-medium text-gray-600 w-28 md:w-36 flex-shrink-0">가입일:</div>
+            <div className="text-gray-900 truncate">{memberInfo.join_date}</div>
+          </li>
+          <li className="flex items-center">
+            <div className="font-medium text-gray-600 w-28 md:w-36 flex-shrink-0">등급:</div>
+            <div className="text-gray-900 truncate">{memberInfo.grade}</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  );
 };
 
 export default MyPage;

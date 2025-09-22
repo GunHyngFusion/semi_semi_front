@@ -4,7 +4,7 @@ import MyPageModify from "../pages/MyPage/MyPageModify";
 const myPageRouter = () => {
   return [
     {
-      path: "",
+      path: ":id",
       element: <MyPage />,
     },
     {

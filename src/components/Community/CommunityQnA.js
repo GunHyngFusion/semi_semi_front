@@ -1,4 +1,23 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
+
 const CommunityQnA = () => {
+  const [qnas, setQnas] = useState([])
+  useEffect(() => {
+    const getQnas=async()=>{
+      try {
+        const {data} = await axios.get('http://localhost:8080/question')
+        console.log(data)
+        setQnas(data)
+      } catch (error) {
+        alert("오류 발생")
+        console.log(error)
+      }
+    }
+  
+    
+  }, [])
+  
   const questions = [
     {
       question: "📖 책을 대출하려면 어떻게 해야 하나요?",

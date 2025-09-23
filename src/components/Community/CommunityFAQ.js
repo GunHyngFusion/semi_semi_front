@@ -1,47 +1,66 @@
-const CommunityFAQ = () => {
-  const faqs = [
-    "상환조회 신청한 이도서를 이전이전에 업무시간 종료 후 수정할 수 있나요?",
-    "상환조회 서비스가 무엇인가요?",
-    "상환조회 신청접수는 몇 건인가요?",
-    "상환조회 서비스는 어떻게 신청하나요?",
-  ];
+import axios from "axios";
+import { useEffect, useState } from "react";
 
+const CommunityFAQ = () => {
+  // 1. state의 초기값을 배열 '[]'이 아닌 객체 '{}'로 설정합니다.
+  const [groupedFaqs, setGroupedFaqs] = useState({});
+
+  useEffect(() => {
+    const getFaq = async () => {
+      try {
+        // 백엔드에서 이미 그룹화된 데이터를 받아옵니다.
+        const { data } = await axios.get("http://localhost:8080/FAQ");
+        setGroupedFaqs(data);
+      } catch (error) {
+        alert("에러 발생");
+        console.log(error);
+      }
+    };
+    getFaq();
+  }, []);
+
+  // 2. Object.keys()를 사용해 객체를 렌더링합니다.
   return (
     <div className="col-lg-10 col-md-9 main-content p-4">
-      <h1 className="main-title">💼 상환조회 서비스 안내</h1>
-
-      <div className="faq-section bg-white border rounded p-4 mb-4">
-        <h3 className="section-title">❓ 자주 묻는 질문</h3>
-        <div className="accordion" id="faqAccordion">
-          {faqs.map((question, index) => (
-            <div className="accordion-item" key={index}>
-              <h2 className="accordion-header" id={`heading${index}`}>
-                <button
-                  className="accordion-button collapsed"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target={`#collapse${index}`}
-                  aria-expanded="false"
-                  aria-controls={`collapse${index}`}
+      <h1 className="main-title">💼 자주 묻는 질문</h1>
+      
+      {/* groupedFaqs 객체의 키(카테고리명)들을 배열로 만들어 순회합니다. */}
+      {Object.keys(groupedFaqs).map((category, categoryIndex) => (
+        <div key={categoryIndex} className="faq-section bg-white border rounded p-4 mb-4">
+          <h3 className="section-title">❓ {category}</h3>
+          
+          <div className="accordion" id={`faqAccordion-${categoryIndex}`}>
+            
+            {/* ✅ 여기가 핵심! 
+              category 변수를 사용해 객체에서 해당 키의 '값(value)'을 꺼내옵니다.
+              꺼내온 값은 FAQ 객체들의 '배열'이므로, 다시 map()으로 순회할 수 있습니다.
+            */}
+            {groupedFaqs[category].map((faq, faqIndex) => (
+              <div className="accordion-item" key={faq.id}> {/* faq에 고유 id가 있다면 key로 사용하는 것이 가장 좋습니다 */}
+                <h2 className="accordion-header" id={`heading-${categoryIndex}-${faqIndex}`}>
+                  <button
+                    className="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target={`#collapse-${categoryIndex}-${faqIndex}`}
+                  >
+                    {faq.question}
+                  </button>
+                </h2>
+                <div
+                  id={`collapse-${categoryIndex}-${faqIndex}`}
+                  className="accordion-collapse collapse"
+                  data-bs-parent={`#faqAccordion-${categoryIndex}`}
                 >
-                  {question}
-                </button>
-              </h2>
-              <div
-                id={`collapse${index}`}
-                className="accordion-collapse collapse"
-                aria-labelledby={`heading${index}`}
-                data-bs-parent="#faqAccordion" // 이 줄이 핵심! 한 개만 열리게 함
-              >
-                <div className="accordion-body">
-                  {/* 여기에 각 질문에 대한 실제 답변을 넣을 수 있음 */}
-                  답변 내용은 해당 서비스 안내 페이지를 참고해주세요.
+                  <div className="accordion-body">
+                    {faq.answer}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
+      ))}
     </div>
   );
 };

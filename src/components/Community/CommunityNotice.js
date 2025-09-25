@@ -1,80 +1,74 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom"; // Link 대신 useNavigate를 사용합니다.
+
 const CommunityNotice = () => {
-  const notices = [
-    {
-      number: 1,
-      category: "공지",
-      title: "2023년 하반기 도서관 운영시간 변경 안내",
-      date: "2023-09-01",
-      attachment: true,
-      views: 1523,
-    },
-    {
-      number: 2,
-      category: "학술",
-      title: "2023년 독서토론대회 참가자 모집",
-      date: "2023-08-15",
-      attachment: false,
-      views: 987,
-    },
-    {
-      number: 3,
-      category: "운영",
-      title: "도서관 시스템 점검 안내 (9/20)",
-      date: "2023-08-01",
-      attachment: true,
-      views: 2045,
-    },
-    {
-      number: 4,
-      category: "공지",
-      title: "2022년 성산 어린이 그림대회 결과 발표",
-      date: "2022-04-11",
-      attachment: false,
-      views: 312,
-    },
-  ];
+  const [notices, setNotice] = useState([]);
+  const navigate = useNavigate(); // 페이지 이동을 위한 함수
+
+  useEffect(() => {
+    const getNotices = async () => {
+      try {
+        const { data } = await axios.get('http://localhost:8080/notice/list');
+        setNotice(data);
+      } catch (error) {
+        console.log(error);
+        alert('오류 발생');
+      }
+    };
+    getNotices();
+  }, []);
+
+  // 공지사항 클릭 시 상세 페이지로 이동하는 함수
+  const handleNoticeClick = (noticeId) => {
+    // 실제 상세 페이지 경로에 맞게 수정해주세요.
+    navigate(`/community/notice/${noticeId}`);
+  };
 
   return (
     <div className="col-lg-10 col-md-9 main-content p-4">
       <h1 className="main-title">📢 공지사항</h1>
 
-      <div className="notice-section bg-white border rounded p-4">
-        <table className="table table-bordered table-hover text-center">
+      <div className="bg-white border rounded p-4">
+        {/* Bootstrap 클래스는 유지하고, Tailwind CSS를 추가하여 스타일을 보강합니다. */}
+        <table className="table table-hover text-center w-full">
           <thead className="table-light">
             <tr>
-              <th>번호</th>
-              <th>구분</th>
-              <th>제목</th>
-              <th>작성일</th>
-              <th>첨부</th>
-              <th>조회수</th>
+              <th className="w-1/12">번호</th>
+              <th className="w-2/12">작성자</th>
+              <th className="w-5/12">제목</th>
+              <th className="w-2/12">작성일</th>
+              <th className="w-1/12">첨부</th>
+              <th className="w-1/12">조회수</th>
             </tr>
           </thead>
+          
+          {/* <tbody> 태그로 본문 영역을 감싸주는 것이 좋습니다. */}
           <tbody>
             {notices.map((notice) => (
-              <tr key={notice.number}>
-                <td>{notice.number}</td>
-                <td>{notice.category}</td>
+              // <tr>에 직접 onClick 이벤트를 추가합니다.
+              <tr 
+                key={notice.noticeId} 
+                onClick={() => handleNoticeClick(notice.noticeId)}
+                className="cursor-pointer hover:bg-gray-50" // 마우스 커서와 호버 효과 추가
+              >
+                <td>{notice.noticeId}</td>
+                <td>{notice.writer}</td>
                 <td className="text-start">{notice.title}</td>
-                <td>{notice.date}</td>
+                {/* 날짜 형식을 '년. 월. 일.' 형태로 변경하여 가독성을 높입니다. */}
+                <td>{new Date(notice.createdAt).toLocaleDateString()}</td>
                 <td>{notice.attachment ? "📎" : "-"}</td>
-                <td>{notice.views.toLocaleString()}</td>
+                <td>{notice.viewCount}</td>
               </tr>
             ))}
           </tbody>
         </table>
 
+        {/* 페이지네이션 (기능 구현은 별도로 필요합니다) */}
         <nav className="mt-4">
           <ul className="pagination justify-content-center">
-            <li className="page-item active">
-              <span className="page-link">1</span>
-            </li>
-            <li className="page-item">
-              <a className="page-link" href="#">2</a>
-            </li>
-            <li className="page-item">
-              <a className="page-link" href="#">3</a>
-            </li>
+            {/* ... 페이지네이션 아이템들 ... */}
+            <li className="page-item active"><span className="page-link">1</span></li>
           </ul>
         </nav>
       </div>

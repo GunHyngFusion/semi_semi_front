@@ -5,15 +5,14 @@ import { useNavigate } from "react-router-dom";
 const Main = () => {
   const [notice, setNotice] = useState([]);
   const navigate = useNavigate();
-  const categories = ["notice/list"];
+  const categories = ['notice/list']; //qna recommandation 백엔드 구성 시 추가 예정
   const handleClick = (noticeId) => {
-    navigate(`http://localhost:3000/notice/${noticeId}`)
+    navigate(`notice/${noticeId}`)
   }
 
   useEffect(() => {
     const get = async () => {
       for (let i = 0; i < categories.length; i++) {
-        console.log(`http://localhost:8080/${categories[i]}`)
         const { data } = await axios.get(`http://localhost:8080/${categories[i]}`);
         console.log(data)
         const filteredData = data.slice(0, 5);

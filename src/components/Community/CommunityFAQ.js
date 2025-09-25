@@ -18,6 +18,7 @@ const CommunityFAQ = () => {
     };
     getFaq();
   }, []);
+  
 
   // 2. Object.keys()를 사용해 객체를 렌더링합니다.
   return (
@@ -61,6 +62,14 @@ const CommunityFAQ = () => {
           </div>
         </div>
       ))}
+       <form
+      action="http://localhost:8080/upload"
+      method="POST"
+      encType="multipart/form-data"
+    >
+      <input type="file" name="file" />
+      <button type="submit">업로드</button>
+    </form>
     </div>
   );
 };

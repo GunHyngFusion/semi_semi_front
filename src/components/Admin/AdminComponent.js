@@ -1,21 +1,25 @@
-import React from "react";
-import AdminLayout from "./AdminLayout";
-import AdminBook from "./AdminBook";
-import AdminCommuniyFAQ from "./AdminCommuniyFAQ";
-import { BookApi } from "../../apis/book/bookApi";
-import { CommunityApi } from "../../apis/community/communityApi";
-import { LibraryApi } from "../../apis/library/libraryApi";
+// import React from 'react';
+// import AdminLayout from "./AdminLayout";
+// import AdminBook from "./AdminBook";
+// import AdminCommunityFAQ from "./AdminCommunityFAQ";
 
-const AdminComponent = () => {
-  const api = null;
-  return (
-    <div>
-      <AdminLayout children={<AdminBook />} funcs={BookApi} />
-      <AdminLayout children={<AdminCommuniyFAQ />} funcs={CommunityApi} />
-      <AdminLayout children={<AdminCommuniyFAQ />} funcs={LibraryApi} />
-      <AdminLayout children={<AdminCommuniyFAQ />} funcs={MyPageApi} />
-    </div>
-  );
-};
+// // 🚨 Named Import 방식으로 수정 완료
+// import { BookApi } from "../../apis/book/BookApi";
+// import { CommunityApi } from "../../apis/community/CommunityApi";
+// import { LibraryApi } from "../../apis/library/LibraryApi";
+// import { MyPageApi } from "../../apis/mypage/MyPageApi";
 
-export default AdminComponent;
+// const AdminComponent = () => {
+//     // 경고(Warning) 해결을 위해 'api' 변수 선언 삭제 (또는 주석 처리)
+
+//     return (
+//         <div>
+//             <AdminLayout children={<AdminBook />} funcs={BookApi} />
+//             <AdminLayout children={<AdminCommunityFAQ />} funcs={CommunityApi} />
+//             <AdminLayout children={<AdminCommunityFAQ />} funcs={LibraryApi} />
+//             <AdminLayout children={<AdminCommunityFAQ />} funcs={MyPageApi} />
+//         </div>
+//     );
+// };
+
+// export default AdminComponent;

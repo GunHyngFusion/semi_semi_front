@@ -10,4 +10,6 @@ const insert = () => {
 const update = () => {
   console.log("library update");
 };
-export const LibraryApi = { readOne, deleteOne, insert, update };
+
+const LibraryApi = { readOne, deleteOne, insert, update };
+export default LibraryApi;

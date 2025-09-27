@@ -10,4 +10,6 @@ const insert = () => {
 const update = () => {
   console.log("community update");
 };
-export const CommunityApi = { readOne, deleteOne, insert, update };
+
+const CommunityApi = { readOne, deleteOne, insert, update };
+export default CommunityApi;

@@ -10,4 +10,6 @@ const insert = () => {
 const update = () => {
   console.log("mypage update");
 };
-export const MyPageApi = { readOne, deleteOne, insert, update };
+
+const MyPageApi = { readOne, deleteOne, insert, update };
+export default MyPageApi;

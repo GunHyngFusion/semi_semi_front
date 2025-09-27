@@ -15,6 +15,14 @@ const Header = () => {
         <ul className="flex items-center gap-8 m-0 p-0 list-none">
           <li>
             <Link
+              to="/admin"
+              className="text-gray-700 font-medium no-underline transition-colors duration-300 hover:text-green-800"
+            >
+              관리자(추후삭제)
+            </Link>
+          </li>
+          <li>
+            <Link
               to="/book/list"
               className="text-gray-700 font-medium no-underline transition-colors duration-300 hover:text-green-800"
             >

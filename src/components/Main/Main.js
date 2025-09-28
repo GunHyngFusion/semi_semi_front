@@ -8,7 +8,7 @@ const Main = () => {
     const navigate = useNavigate();
     
     const handleClick = (noticeId) => {
-        navigate(`notice/${noticeId}`)
+        navigate(`/community/notice/${noticeId}`)
     }
 
     useEffect(() => {
@@ -103,7 +103,7 @@ const Main = () => {
                                 key={item.questionId || index} // questionId가 있다면 그것을 key로 사용
                                 type="button"
                                 // Q&A는 클릭 시 상세 페이지로 이동하는 로직이 없으므로 임시로 빈 함수
-                                onClick={() => {/* navigate(`qna/${item.questionId}`) */} } 
+                                onClick={() => {navigate('/community/qna') } }
                                 className="w-full flex items-center text-left text-gray-600 hover:bg-gray-50 p-2 rounded-md transition-colors duration-200"
                             >
                                 {/* 작성자 */}

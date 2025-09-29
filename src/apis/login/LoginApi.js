@@ -1,5 +1,7 @@
-export const getMemberInfo = async() =>{
-    const {data} = await axios.get('http://localhost:8080/members')
-    console.log(data)
-    
+import axios from "axios"
+
+export const loginApi = async(email, name) =>{
+    const res = await axios.post('http://localhost:8080/login', {email, name})
+    console.log(res)
+    return res
 }

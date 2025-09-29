@@ -1,5 +1,3 @@
-import React from "react";
-
 const Footer = () => {
   return (
     <footer className="bg-[#8B4513] bg-opacity-80 shadow-md text-white font-serif">
@@ -20,6 +18,7 @@ const Footer = () => {
             </a>
           </p>
         </div>
+
       </div>
     </footer>
   );

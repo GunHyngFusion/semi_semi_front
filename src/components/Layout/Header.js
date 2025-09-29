@@ -1,7 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import LoginComponent from "../User/LoginComponent";
 
 const Header = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const email = localStorage.getItem('email')
+  useEffect(() => {
+    const checkLogin=()=>{
+      const status = localStorage.getItem('isLoggedIn')==='true'
+      setIsLoggedIn(status)
+    }
+   checkLogin();
+    window.addEventListener('storage', checkLogin);
+    return () => {
+      window.removeEventListener('storage', checkLogin);
+    }
+  }, [])
+  
   return (
     <header className="flex justify-between items-center py-4 px-8 bg-white border-b border-gray-200 shadow-sm">
       {/* 로고 */}
@@ -45,13 +60,19 @@ const Header = () => {
               이용자 마당
             </Link>
           </li>
+          {isLoggedIn && (
           <li>
             <Link
-              to="/mypage"
+              to={`/mypage/${email}`}
               className="text-gray-700 font-medium no-underline transition-colors duration-300 hover:text-green-800"
             >
               마이페이지
             </Link>
+          </li>
+          )}
+
+          <li>
+            <LoginComponent onStatusChange={setIsLoggedIn}/>
           </li>
         </ul>
       </nav>

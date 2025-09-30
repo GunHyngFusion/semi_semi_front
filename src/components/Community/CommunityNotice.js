@@ -3,25 +3,24 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; // Link 대신 useNavigate를 사용합니다.
 
 const CommunityNotice = () => {
-  const [notices, setNotice] = useState([]);
+  const [notices, setNotice] = useState([]); // 공지 저장 state 
   const navigate = useNavigate(); // 페이지 이동을 위한 함수
 
   useEffect(() => {
     const getNotices = async () => {
       try {
-        const { data } = await axios.get('http://localhost:8080/notice/list');
+        const { data } = await axios.get('http://localhost:8080/notice/list'); //공지사항 데이터 받아옴
         setNotice(data);
       } catch (error) {
         console.log(error);
         alert('오류 발생');
       }
     };
-    getNotices();
+    getNotices(); //IIFE
   }, []);
 
   // 공지사항 클릭 시 상세 페이지로 이동하는 함수
   const handleNoticeClick = (noticeId) => {
-    // 실제 상세 페이지 경로에 맞게 수정해주세요.
     navigate(`/community/notice/${noticeId}`);
   };
 

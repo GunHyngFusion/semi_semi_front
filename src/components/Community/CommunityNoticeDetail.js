@@ -3,14 +3,14 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 const CommunityNoticeDetail = () => {
-  const { noticeId } = useParams();
-  const navigate = useNavigate(); // 목록으로 돌아가기 위한 navigate 함수
-  const [notice, setNotice] = useState({});
+  const { noticeId } = useParams(); // 공지사항 id params 로 받아옴
+  const navigate = useNavigate(); // 공지목록으로 돌아가기 위한 navigate 함수
+  const [notice, setNotice] = useState({}); // 공지사항 표시를 위해 state 로 저장 
 
   useEffect(() => {
     const getNotice = async () => {
       try {
-        const { data } = await axios.get(`http://localhost:8080/notice/info/${noticeId}`);
+        const { data } = await axios.get(`http://localhost:8080/notice/info/${noticeId}`); //id 로 공지 하나 받아옴
         setNotice(data);
       } catch (error) {
         console.log(error);

@@ -9,15 +9,15 @@ const Main = () => {
     
     const handleClick = (noticeId) => {
         navigate(`/community/notice/${noticeId}`)
-    }
+    } //공지사항 클릭하면 공지사항 페이지로 이동
 
     useEffect(() => {
         const getNotice = async () => {
             try {
                 const { data } = await axios.get(`http://localhost:8080/notice/list`);
                 console.log("공지사항 데이터:", data);
-                const filteredData = data.slice(0, 5);
-                setNotice(filteredData)
+                const filteredData = data.slice(0, 5); //메인 페이지에 공지 5개만 표시 
+                setNotice(filteredData) //공지사항 state 저장
             } catch (error) {
                 console.error("공지사항 로딩 오류:", error);
             }
@@ -26,13 +26,12 @@ const Main = () => {
             try {
                 const { data } = await axios.get(`http://localhost:8080/questions`);
                 console.log("QNA 데이터:", data);
-                const filteredData = data.slice(0, 5);
-                setQnas(filteredData)
+                const filteredData = data.slice(0, 5);//메인 페이지에 qna 5개만 표시
+                setQnas(filteredData)//qna state 저장
             } catch (error) {
                 console.error("QNA 로딩 오류:", error);
             }
         };
-
         // 개별 비동기 함수 호출 유지
         getNotice();
         getQna();

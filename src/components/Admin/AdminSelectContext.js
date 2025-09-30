@@ -1,10 +1,8 @@
-import {createContext} from "react";
+import { createContext } from "react";
 
 const AdminSelectedContext = createContext({
-  selectedBookIsbn: "none",
-  setSelectedBookIsbn: () => {},
-  selectedCommunityId: "none",
-  setSelectedCommunityId: () => {},
+  selectId: "",
+  setSelectId: () => {},
 });
 
 export default AdminSelectedContext;

@@ -3,19 +3,19 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 const MyPage = () => {
-  const [memberInfo, setMemberInfo] = useState({});
+  const [memberInfo, setMemberInfo] = useState({}); //멤버 정보 저장 state 
   const { id } = useParams();
   useEffect(() => {
-    const getMemberInfo = async () => {
-      try {
-        const { data } = await axios.get(`http://localhost:8080/member/info/${id}`)
-        setMemberInfo(data);
+     const getMemberInfo = async () => {
+      try { 
+        const { data } = await axios.get(`http://localhost:8080/member/info/${id}`) //email 로 멤버 정보 가져옴
+        setMemberInfo(data); //백엔드에서 전달한 멤버 정보 state 에 저장
       } catch (error) {
         alert("오류 발생");
         console.log(error);
       }
     };getMemberInfo()
-  }, [id])
+  }, [id]) //email 변경 시 실행
 
   return (
     <div className="p-4 md:p-8 w-full max-w-4xl mx-auto">

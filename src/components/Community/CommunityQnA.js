@@ -2,78 +2,82 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 const CommunityQnA = () => {
-  const [qnas, setQnas] = useState([])
-  useEffect(() => {
-    const getQnas=async()=>{
-      try {
-              console.log("실행중")
-        const {data} = await axios.get('http://localhost:8080/questions')
-        console.log(data)
-        setQnas(data)
-      } catch (error) {
-        alert("오류 발생")
-        console.log(error)
-      } 
-    };getQnas();
-  
-    
-  }, [])
+  const [qnas, setQnas] = useState([]);
 
-  return (
-    <div className="col-lg-10 col-md-9 main-content p-4">
-      <h1 className="main-title mb-4">📚 도서관 Q&A 게시판</h1>
+  const [activeIndex, setActiveIndex] = useState(null);
 
-      {/* 💡 아코디언 컴포넌트를 사용하여 질문/답변 목록을 깔끔하게 표시 */}
-      <div className="accordion" id="qnaAccordion">
-        {qnas.map((qna, index)=>(
-          <div className="accordion-item" key={qna.questionId || index}>
-            
-            {/* 질문 헤더 (클릭 가능 영역) */}
-            <h2 className="accordion-header" id={`heading${index}`}>
-              <button
-                className="accordion-button collapsed d-flex justify-content-between align-items-center"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target={`#collapse${index}`}
-                aria-expanded="false"
-                aria-controls={`collapse${index}`}
-              >
-                <span className="fw-bold me-3 text-primary">[Q] {qna.title}</span>
-                <span className="badge text-bg-secondary">{qna.memberName}</span>
-              </button>
-            </h2>
-            
-            {/* 답변 내용 영역 (접혀 있는 부분) */}
-            <div
-              id={`collapse${index}`}
-              className="accordion-collapse collapse"
-              aria-labelledby={`heading${index}`}
-              data-bs-parent="#qnaAccordion"
-            >
-              <div className="accordion-body bg-light">
-                
-                {/* 질문 내용 */}
-                <p className="mb-3 border-bottom pb-2">
-                    <span className="fw-semibold">질문 내용:</span> {qna.content}
+  const toggleAccordion = (index) => {
+    setActiveIndex(activeIndex === index ? null : index);
+  };
+
+  useEffect(() => {
+    const getQnas = async () => {
+      try {
+        console.log("실행중");
+        const { data } = await axios.get("http://localhost:8080/questions");
+        console.log(data);
+        setQnas(data);
+      } catch (error) {
+        alert("오류 발생");
+        console.log(error);
+      }
+    };
+    getQnas();
+  }, []);
+
+  return (
+    <div className="w-full max-w-5xl mx-auto p-4">
+      <h1 className="text-2xl font-semibold mb-6">📚 도서관 Q&A 게시판</h1>
+
+      <div className="space-y-4">
+        {qnas.map((qna, index) => (
+          <div
+            key={qna.questionId || index}
+            className="border rounded-lg overflow-hidden"
+          >
+            {/* 질문 헤더 */}
+            <button
+              className="w-full flex justify-between items-center px-4 py-3 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              onClick={() => toggleAccordion(index)}
+            >
+              <span className="text-blue-600 font-semibold">
+                [Q] {qna.title}
+              </span>
+              <span className="bg-gray-600 text-white text-xs px-2 py-1 rounded-full">
+                {qna.memberName}
+              </span>
+            </button>
+
+            {/* 답변 영역 */}
+            {activeIndex === index && (
+              <div className="bg-gray-50 px-4 py-4 space-y-4">
+                <p className="border-b pb-2">
+                  <span className="font-semibold">질문 내용:</span>{" "}
+                  {qna.content}
                 </p>
-                
-                {/* 답변 내용 */}
-                <div className="alert alert-success p-3 mb-0">
-                    <span className="fw-semibold">[A] 답변:</span> 
-                    {
-                        // 답변이 null인 경우와 아닌 경우를 구분하여 표시
-                        qna.answer ? qna.answer : 
-                        <span className="text-danger fst-italic">아직 답변이 작성되지 않았습니다.</span>
-                    }
+                <div
+                  className={`p-3 rounded-lg ${
+                    qna.answer
+                      ? "bg-green-100 text-green-800"
+                      : "bg-red-100 text-red-600"
+                  }`}
+                >
+                  <span className="font-semibold">[A] 답변:</span>{" "}
+                  {qna.answer ? (
+                    qna.answer
+                  ) : (
+                    <span className="italic">
+                      아직 답변이 작성되지 않았습니다.
+                    </span>
+                  )}
                 </div>
-                
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 };
 
 export default CommunityQnA;

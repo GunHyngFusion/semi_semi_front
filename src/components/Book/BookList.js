@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 const BookList = () => {
-  const [bookList, setBookList] = useState([]);
-  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [bookList, setBookList] = useState([]); //전체 리스트 저장 state
+  const [selectedCategories, setSelectedCategories] = useState([]); // 선택된 카테고리 저장 state
   const categories = ['문학', '과학', '국내소설', '해외소설'];
   const etc = [...categories, '기타'];
 
@@ -15,27 +15,27 @@ const BookList = () => {
         console.log(data)
         const finalData = data.map(book => 
           categories.includes(book.genre) ? book : { ...book, genre: '기타' }
-        )
-        setBookList(finalData)
+        ) //카테고리에 해당하지 않는 책 장르를 기타로 설정
+        setBookList(finalData) 
       }; getList();
     } catch (error) {
       console.log(error);
     }
   }, [])
 
-  const handleCheckedCategory = (category) => {
+  const handleCheckedCategory = (category) => { // 체크된 카테고리 지정
     setSelectedCategories((prev) => {
-      if (prev.includes(category)) {
+      if (prev.includes(category)) { //이미 체크된 카테고리면 체크 없앰
         return prev.filter(c => c !== category)
       }
-      else {
+      else { //아직 체크되지 않는 카테고리면 추가
         return [...prev, category]
       }
     })
   }
-  const filteredBooks = selectedCategories.length == 0
+  const filteredBooks = selectedCategories.length == 0 //유효성 검사 
     ? bookList
-    : bookList.filter(book => selectedCategories.includes(book.genre))
+    : bookList.filter(book => selectedCategories.includes(book.genre)) //체크된 카테고리 책만 저장
 
   return (
     <div className="container-fluid">

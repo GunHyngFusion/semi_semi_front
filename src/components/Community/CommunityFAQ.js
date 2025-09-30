@@ -2,74 +2,46 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 const CommunityFAQ = () => {
-  // 1. state의 초기값을 배열 '[]'이 아닌 객체 '{}'로 설정합니다.
   const [groupedFaqs, setGroupedFaqs] = useState({});
+  const [activeKey, setActiveKey] = useState(null);
 
   useEffect(() => {
-    const getFaq = async () => {
-      try {
-        // 백엔드에서 이미 그룹화된 데이터를 받아옵니다.
-        const { data } = await axios.get("http://localhost:8080/FAQ");
-        setGroupedFaqs(data);
-      } catch (error) {
-        alert("에러 발생");
-        console.log(error);
-      }
-    };
-    getFaq();
+    axios
+      .get("http://localhost:8080/FAQ")
+      .then((res) => setGroupedFaqs(res.data))
+      .catch((err) => console.error("에러 발생", err));
   }, []);
-  
 
-  // 2. Object.keys()를 사용해 객체를 렌더링합니다.
   return (
-    <div className="col-lg-10 col-md-9 main-content p-4">
-      <h1 className="main-title">💼 자주 묻는 질문</h1>
-      
-      {/* groupedFaqs 객체의 키(카테고리명)들을 배열로 만들어 순회합니다. */}
-      {Object.keys(groupedFaqs).map((category, categoryIndex) => (
-        <div key={categoryIndex} className="faq-section bg-white border rounded p-4 mb-4">
-          <h3 className="section-title">❓ {category}</h3>
-          
-          <div className="accordion" id={`faqAccordion-${categoryIndex}`}>
-            
-            {/* ✅ 여기가 핵심! 
-              category 변수를 사용해 객체에서 해당 키의 '값(value)'을 꺼내옵니다.
-              꺼내온 값은 FAQ 객체들의 '배열'이므로, 다시 map()으로 순회할 수 있습니다.
-            */}
-            {groupedFaqs[category].map((faq, faqIndex) => (
-              <div className="accordion-item" key={faq.id}> {/* faq에 고유 id가 있다면 key로 사용하는 것이 가장 좋습니다 */}
-                <h2 className="accordion-header" id={`heading-${categoryIndex}-${faqIndex}`}>
-                  <button
-                    className="accordion-button collapsed"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target={`#collapse-${categoryIndex}-${faqIndex}`}
-                  >
-                    {faq.question}
-                  </button>
-                </h2>
-                <div
-                  id={`collapse-${categoryIndex}-${faqIndex}`}
-                  className="accordion-collapse collapse"
-                  data-bs-parent={`#faqAccordion-${categoryIndex}`}
+    <div className="max-w-4xl mx-auto p-4">
+      <h1 className="text-xl font-bold mb-6">💼 자주 묻는 질문</h1>
+
+      {Object.entries(groupedFaqs).map(([category, faqs]) => (
+        <div key={category} className="mb-6">
+          <h2 className="text-lg font-semibold mb-3">❓ {category}</h2>
+
+          {faqs.map((faq, i) => {
+            const key = `${category}-${i}`;
+            const open = activeKey === key;
+
+            return (
+              <div key={faq.id} className="border rounded mb-2">
+                <button
+                  onClick={() => setActiveKey(open ? null : key)}
+                  className="w-full text-left px-4 py-2 bg-gray-100 hover:bg-gray-200"
                 >
-                  <div className="accordion-body">
+                  {faq.question}
+                </button>
+                {open && (
+                  <div className="px-4 py-2 bg-gray-50 text-sm text-gray-700 border-t">
                     {faq.answer}
                   </div>
-                </div>
+                )}
               </div>
-            ))}
-          </div>
+            );
+          })}
         </div>
       ))}
-       <form
-      action="http://localhost:8080/upload"
-      method="POST"
-      encType="multipart/form-data"
-    >
-      <input type="file" name="file" />
-      <button type="submit">업로드</button>
-    </form>
     </div>
   );
 };
